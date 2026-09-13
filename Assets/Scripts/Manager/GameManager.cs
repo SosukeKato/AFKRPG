@@ -1,14 +1,9 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    private void Awake()
+    protected override void Awake()
     {
-        
-    }
-
-    private void Update()
-    {
-        
+        base.Awake();
     }
 }
