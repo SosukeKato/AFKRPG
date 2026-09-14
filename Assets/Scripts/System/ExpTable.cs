@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class Table
+public static class ExpTable
 {
     const int REQUIRE_EXP_AMOUNT = 4;
     const float EXP_MULTIPLIER = 1.2f;
@@ -11,17 +11,25 @@ public static class Table
     /// <param name="currentLevel"></param>
     /// <param name="expGain"></param>
     /// <returns></returns>
-    public static (uint level, uint exp) Exp(uint currentLevel,uint expGain)
+    public static (uint level, uint exp) Exp(uint currentLevel, uint expGain, uint maxLevel = uint.MaxValue)
     {
-        uint required = GeometricSequence(currentLevel);
-        if (expGain >= required)
+        while (currentLevel < maxLevel)
         {
+            uint required = GeometricSequence(currentLevel);
+            if (expGain < required) break;
+
             expGain -= required;
             currentLevel++;
-            return Exp(currentLevel, expGain);
         }
         return (currentLevel, expGain);
     }
+
+    /// <summary>
+    /// 指定レベルから次のレベルの必要な経験値量
+    /// </summary>
+    /// <param name="level"></param>
+    /// <returns></returns>
+    public static uint RequiredExp(uint level) => GeometricSequence(level);
 
     /// <summary>
     /// 等比数列的に次レベルまでの必要経験値を計算
