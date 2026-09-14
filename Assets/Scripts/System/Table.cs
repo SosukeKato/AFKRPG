@@ -1,0 +1,52 @@
+using UnityEngine;
+
+public static class Table
+{
+    const int REQUIRE_EXP_AMOUNT = 4;
+    const float EXP_MULTIPLIER = 1.2f;
+
+    /// <summary>
+    /// 経験値処理
+    /// </summary>
+    /// <param name="currentLevel"></param>
+    /// <param name="expGain"></param>
+    /// <returns></returns>
+    public static (uint level, uint exp) Exp(uint currentLevel,uint expGain)
+    {
+        uint required = GeometricSequence(currentLevel);
+        if (expGain >= required)
+        {
+            expGain -= required;
+            currentLevel++;
+            return Exp(currentLevel, expGain);
+        }
+        return (currentLevel, expGain);
+    }
+
+    /// <summary>
+    /// 等比数列的に次レベルまでの必要経験値を計算
+    /// </summary>
+    /// <param name="level"></param>
+    /// <returns></returns>
+    private static uint GeometricSequence(uint level)
+    {
+        float result = REQUIRE_EXP_AMOUNT * Exponent(EXP_MULTIPLIER, level);
+        return (uint)result;
+    }
+
+    /// <summary>
+    /// 累乗計算用(fをp乗する)
+    /// </summary>
+    /// <param name="f"></param>
+    /// <param name="p"></param>
+    /// <returns></returns>
+    private static float Exponent(float f, uint p)
+    {
+        float result = 1;
+        for (int i = 0; i < p; i++)
+        {
+            result *= f;
+        }
+        return result;
+    }
+}
