@@ -3,7 +3,11 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public TimeManager TimeManager => _timeManager;
+    public ExpManager ExpManager => _expManager;
+
     private TimeManager _timeManager;
+    private ExpManager _expManager;
+    private ExpDataBase _expDataBase;
 
     protected override void Awake()
     {
