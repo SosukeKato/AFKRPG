@@ -32,24 +32,30 @@ public class GameManager : Singleton<GameManager>
         _timeManager.Tick(Time.deltaTime);
 
         _autoSaveTimer += Time.deltaTime;
-        if(_autoSaveTimer >= AUTO_SAVE_INTERVAL)
-        {
-            _autoSaveTimer = 0;
-            _saveManager.Save(_saveData);
-        }
+        if (_autoSaveTimer >= AUTO_SAVE_INTERVAL)
+            Save();
+    }
+
+    /// <summary>
+    /// セーブデータを保存
+    /// </summary>
+    public void Save()
+    {
+        _autoSaveTimer = 0;
+        _saveManager.Save(_saveData);
     }
 
     private void OnApplicationPause(bool pause)
     {
         if (pause)
-            _saveManager.Save(_saveData);
+            Save();
 
         _timeManager.HandleApplicationPause(pause);
     }
 
     private void OnApplicationQuit()
     {
-        _saveManager.Save(_saveData);
+        Save();
         _timeManager.HandleApplicationQuit();
     }
 }
