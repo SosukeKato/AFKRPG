@@ -8,6 +8,9 @@ public class GameManager : Singleton<GameManager>
     public ExpManager ExpManager => _expManager;
     private ExpManager _expManager;
 
+    public IdleRewardManager IdleRewardManager => _idleRewardManager;
+    private IdleRewardManager _idleRewardManager;
+
     private SaveManager _saveManager;
     private SaveData _saveData;
     private float _autoSaveTimer;
@@ -21,10 +24,13 @@ public class GameManager : Singleton<GameManager>
         _saveManager = new SaveManager();
         _saveData = _saveManager.Load();
 
-        _timeManager = new(tickInterval: 1f);
-        _timeManager.Init();
-
         _expManager = new ExpManager(_saveData.ExpDataBase);
+
+        _timeManager = new TimeManager(tickInterval: 1f);
+
+        _idleRewardManager = new IdleRewardManager(_timeManager, _expManager);
+
+        _timeManager.Init();
     }
 
     private void Update()
